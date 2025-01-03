@@ -1,2 +1,42 @@
  sudo mysql_install_db --user=mysql --ldata=/var/lib/mysql 
  sudo mariadb-secure-installation
+nano /etc/webapps/phpmyadmin/config.inc.php
+
+Change the following line:
+
+$cfg['blowfish_secret'] = 'My_Secret'; 
+
+nano /etc/httpd/conf/httpd.conf
+
+Comment out the following line:
+
+#LoadModule mpm_event_module modules/mod_mpm_event.so
+
+Uncomment the following line:
+
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+
+Add the following lines:
+
+LoadModule php_module modules/libphp.so
+AddHandler php7-script php
+Include conf/extra/php_module.conf
+Include conf/extra/phpmyadmin.conf
+
+Save and close the file, then create an Apache virtual host configuration file:
+
+nano /etc/httpd/conf/extra/phpmyadmin.conf
+
+Add the following lines:
+
+Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
+ <Directory "/usr/share/webapps/phpMyAdmin">
+  DirectoryIndex index.php
+  AllowOverride All
+  Options FollowSymlinks
+  Require all granted
+ </Directory>
+
+Save and close the file, then restart the Apache service to apply the changes:
+
+systemctl restart httpd
