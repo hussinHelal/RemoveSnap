@@ -19,7 +19,7 @@ LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
 Add the following lines:
 
 LoadModule php_module modules/libphp.so
-AddHandler php7-script php
+AddHandler php-script php
 Include conf/extra/php_module.conf
 Include conf/extra/phpmyadmin.conf
 
@@ -40,3 +40,5 @@ Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
 Save and close the file, then restart the Apache service to apply the changes:
 
 systemctl restart httpd
+
+when you get unable to load libphp.so error check if php-apache is installed 
